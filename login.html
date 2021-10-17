@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ 
+    <style>
+       
+       #login-form {
+            display: grid;
+            padding: 13px;
+            margin: 3% 24%;
+            grid-template-columns: 20% 70%;
+            gap: 27px;
+            box-shadow: 2px 3px 15px rgb(156, 132, 88);
+        }
+
+
+
+
+        input {
+            color: black;
+            height: 24px;
+            font-size: 18px;
+            margin: 2px;
+            border-radius: 5px;
+        }
+
+        #signBtn {
+            margin-top: 2px;
+            margin-left: 345px;
+            width: 138px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            height: 23px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+            <h2 id="errorMsg"></h2>
+        </div>
+        <div id="login">
+            <form id="login-form" onsubmit="Login(event)">
+                <label for="">Username</label>
+                <input type="text" id="loginuser" placeholder="username" />
+                <label for="">Password</label>
+                <input type="password" id="loginpassword" placeholder="password" />
+                <input type="submit" />
+                <button id="signBtn" onclick="signup()">Create an account</button>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+ function signup(){
+    window.location.href='signup.html'
+ }
+let errorMsg=document.getElementById('errorMsg');
+function Login(e){
+    e.preventDefault()
+        let myform = document.getElementById('login-form')
+        let user_detail = {
+            password: myform.loginpassword.value,
+            username: myform.loginuser.value,
+        };
+        console.log('user_detail:', user_detail);
+
+    let data2 = JSON.stringify(user_detail);
+    console.log('data2:', data2)
+
+
+
+    fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+        method: 'POST',
+        body: data2,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((res)=>{
+        return res.json();
+    }).then((res)=>{
+        console.log(res)
+        if(res.error==true){
+            errorMsg.innerHTML='Invalid Credential! Please Try again or create a new account'
+        }else{
+            fetchmyData(user_detail.username,res.token)
+        }
+    })
+.catch((err)=>{
+    console.log(err)
+});
+
+}
+
+
+function fetchmyData(username,token){
+    fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+        headers:{
+            'Content-Type':'application/json',
+            Authorization:`Bearer ${token}`
+        },
+    })
+    .then((res)=>{
+        return res.json();
+    }).then((res)=>{
+        console.log(res)
+        localStorage.setItem('username',JSON.stringify(res.name))
+        window.location.href='youtubeMini.html'
+        console.log('yo')
+       
+
+    })
+.catch((err)=>{
+    console.log(err)
+});
+
+
+}
+
+
+
+
+</script>
