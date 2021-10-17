@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #signup-form {
+            display: grid;
+            margin: 3% 24%;
+            grid-template-columns: 20% 70%;
+            gap: 27px;
+            font-size: 18px;
+            padding: 13px;
+            box-shadow: 2px 3px 15px rgb(156, 132, 88);
+        }
+
+        input {
+
+            color: black;
+            font-size: 17px;
+            margin: 2px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 id="check">
+        </h1>
+        <div id="signup">
+            <form id="signup-form" onsubmit="Signup(event)">
+                Name<input type="text" id="name" placeholder="enter your name" />
+                Email<input type="email" id="email" placeholder="enter your email" />
+                Password<input type="password" id="password" placeholder="enter your password" />
+                Username<input type="text" id="username" placeholder="enter your username" />
+                Mobile<input type="number" id="mobile" placeholder="enter your mobile no" />
+                Description<input type="text" id="description" placeholder="description" />
+                <input type="submit" />
+            </form>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    let check = document.getElementById('check')
+
+    function Signup(e) {
+        e.preventDefault()
+        let myform = document.getElementById('signup-form')
+        let user_detail = {
+
+            name: myform.name.value,
+            email: myform.email.value,
+            password: myform.password.value,
+            username: myform.username.value,
+            mobile: myform.mobile.value,
+            description: myform.description.value
+        };
+        console.log('user_detail:', user_detail);
+
+
+        user_detail = JSON.stringify(user_detail);
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/register", {
+            method: 'POST',
+            body: user_detail,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => {
+            return res.json();
+        }).then((res) => {
+            console.log(res)
+            if (res.error) {
+                check.innerHTML = 'Registration failed, user already exists'
+            }
+            else {
+                alert('Registration Done')
+                window.location.href = 'login.html';
+            }
+        })
+            .catch((err) => {
+                console.log(err)
+            });
+
+    }
+
+
+
+
+
+</script>
