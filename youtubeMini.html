@@ -191,13 +191,18 @@
         }
 
         #pbtn {
-            border-radius: 100%;
-            font-size: 20px;
-            background: #3F51B5;
-            color: white;
-            border: 1px solid #3F51B5;
+                /* border-radius: 100%; */
+    font-size: 17px;
+    background: white;
+    color: #3F51B5;
+    border: 1px solid #3F51B5;
+    cursor: pointer;
+    padding: 6px;
+    font-weight: bold;
+    
         }
 
+     
         .menu {
             background: white;
             border: none;
@@ -239,7 +244,10 @@
                 <img src="images/notificationsIcon.svg" alt="bell">
             </a>
             <a href="#">
-                <button id="pbtn">R</button>
+               
+                <button onclick="signIn()" id="pbtn">
+               
+                </button>
             </a>
 
         </div>
@@ -294,9 +302,25 @@
 </body>
 
 </html>
+
+
 <script>
     let videoContainer = document.querySelector('.video-container');
 
+function signIn(){
+    window.location.href='login.html'
+}
+
+let pbtn=document.getElementById('pbtn')
+
+let nameU=JSON.parse(localStorage.getItem('username'))
+if(nameU==null)
+pbtn.innerHTML="Sign Up"
+else
+pbtn.innerHTML=nameU
+
+
+    
 
     let sideBar1 = document.querySelector('.side-bar')
     let addEvent = document.getElementById('addEvent')
